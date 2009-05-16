@@ -1,8 +1,7 @@
 #!/usr/bin/python
 # coding: utf-8
 
-
-import urllib2, re
+import urllib2, re, os
 
 from datetime import datetime
 from BeautifulSoup import BeautifulSoup as BS
@@ -37,6 +36,18 @@ class TransitoAgora(object):
         time_str = self.bs.find('div', {'id':'hora'}).b.string
         hour, min = re.match(r"(\d{2})h(\d{2})m", time_str).groups()
         return (int(hour), int(min))
+
+    def dumps(self, fmt, f):
+        f.write("%d; %d; %d; %d; %d; %d; %d%s" % ( 
+                                        self.time.year,
+                                        self.time.month,
+                                        self.time.day,
+                                        self.time.hour,
+                                        self.time.minute,
+                                        self.watched,
+                                        self.jam_size,
+                                        os.linesep)
+              )
 
 if __name__ == "__main__":
     import doctest
